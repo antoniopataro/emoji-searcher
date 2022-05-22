@@ -119,8 +119,9 @@ const AppContainer = styled.div`
     }
 
     #emojis-wrapper {
+      grid-column: 2;
       display: grid;
-      grid-template-columns: repeat(20, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
 
       width: 100%;
 
@@ -131,27 +132,20 @@ const AppContainer = styled.div`
       overflow: scroll;
       white-space: nowrap;
 
-      @media (max-width: 1024px) {
-        grid-template-columns: repeat(15, 1fr);
-      }
-
-      @media (max-width: 768px) {
-        grid-template-columns: repeat(7, 1fr);
-      }
-
-      @media (max-width: 375px) {
-        grid-template-columns: repeat(5, 1fr);
+      ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
       }
     }
 
     .emoji {
-      display: flex;
+      display: grid;
+      place-items: center;
+
+      font-size: clamp(16px, 5vw, 30px);
 
       width: 50px;
       height: 50px;
-
-      align-items: center;
-      justify-content: center;
 
       border-radius: 5px;
 
@@ -161,6 +155,33 @@ const AppContainer = styled.div`
         outline: 1px solid ${(props) => props.theme.text};
       }
     }
+  }
+
+  #notify-user {
+    position: fixed;
+
+    bottom: 5vh;
+
+    display: grid;
+    place-items: center;
+
+    text-align: center;
+
+    height: 50px;
+    width: 100px;
+
+    opacity: 1;
+
+    color: ${(props) => props.theme.text};
+    background-color: ${(props) => props.theme.primary};
+  }
+
+  footer {
+    display: grid;
+    place-items: center;
+
+    height: 100%;
+    width: 100%;
   }
 
   img {
@@ -176,6 +197,7 @@ function App() {
   const [theme, setTheme] = useState(dark);
   const [query, setQuery] = useState("");
   const [hoveredEmoji, setHoveredEmoji] = useState(emojis[0]);
+  const [notifyUser, setNotifyUser] = useState(false);
 
   const handleTheme = () => {
     theme === light ? setTheme(dark) : setTheme(light);
@@ -194,7 +216,15 @@ function App() {
 
   const handleEmojiClick = (emoji) => {
     navigator.clipboard.writeText(emoji.symbol);
-    alert(`Copied ${emoji.symbol} to clipboard!`);
+    notifyClick();
+  };
+
+  const notifyClick = () => {
+    setNotifyUser(true);
+
+    setTimeout(() => {
+      setNotifyUser(false);
+    }, 2000);
   };
 
   return (
@@ -240,6 +270,7 @@ function App() {
           <img src={githubIcon} alt="Github" width={30} />
         </a>
       </footer>
+      {notifyUser ? <div id="notify-user">Copied</div> : ""}
     </AppContainer>
   );
 }
