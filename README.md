@@ -1,4 +1,4 @@
-#Emoji Searcher
+# Emoji Searcher
 
 This is a simple Emoji Searcher app. 🤣
 
