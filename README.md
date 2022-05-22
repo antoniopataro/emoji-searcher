@@ -6,7 +6,7 @@ Did it as some sort of speedrun to test my skills. 💨
 
 ## Info
 
-Got the emojis list object from [here](https://github.com/ahfarmer/emoji-search/blob/master/src/emojiList.json).
+Got the emojis list object from [here](https://github.com/ahfarmer/emoji-search/blob/master/src/emojiList.json) (and modified it a little bit).
 
 Logic was super easy. 😎
 
