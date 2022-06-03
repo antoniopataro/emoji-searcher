@@ -4,7 +4,7 @@ This is a simple Emoji Searcher app. 🤣
 
 # Preview
 
-![Preview]([https://s10.gifyu.com/images/project-gif.gif](https://im3.ezgif.com/tmp/ezgif-3-fd9c209a48.gif))
+![Preview](https://im3.ezgif.com/tmp/ezgif-3-fd9c209a48.gif)
 
 Did it initially as some sort of speedrun to test my skills, but later on I focused on improving its UI. 💨
 
