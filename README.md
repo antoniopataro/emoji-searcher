@@ -15,4 +15,4 @@ Got stuck with stylization related to grid and auto-fit, but was able to solve i
 ## Libs
 
 - `styled-components`;
-- `AOS`;
+- `redux`;
