@@ -1,6 +1,5 @@
-import React from "react";
-
-import { useSelector } from "react-redux";
+import React, { useContext } from "react";
+import { ThemeContext } from "./App";
 
 import githubIcon from "../assets/social/githubIcon.svg";
 import linkedinIcon from "../assets/social/linkedinIcon.svg";
@@ -40,7 +39,7 @@ const FooterContainer = styled.footer`
 `;
 
 function Footer() {
-  const theme = useSelector((state) => state.theme.currentTheme);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <FooterContainer theme={theme}>

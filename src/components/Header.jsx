@@ -1,10 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import headerShortcuts from "../shortcuts/headerShortcuts";
-
-import { setQuery } from "../redux/queryReducer";
-import { toggleTheme } from "../redux/themeReducer";
+import React, { useCallback, useRef, useContext, useEffect } from "react";
+import { ThemeContext } from "./App";
 
 import closeIcon from "../assets/closeIcon.svg";
 import themeIcon from "../assets/themeIcon.svg";
@@ -180,30 +175,48 @@ const HeaderContainer = styled.header`
   }
 `;
 
-function Header() {
-  const dispatch = useDispatch();
+function Header({ props }) {
+  const { query, setQuery } = props;
+
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   const inputRef = useRef();
 
-  const theme = useSelector((state) => state.theme.currentTheme);
-  const query = useSelector((state) => state.query.userQuery);
+  const handleKeyPress = useCallback((e) => {
+    const key = e.key.toLowerCase();
+    const ctrl = e.ctrlKey;
 
-  function handleQuery(content) {
-    dispatch(setQuery(content));
-  }
-
-  function changeTheme() {
-    const storagedTheme = localStorage.getItem("userTheme");
-
-    if (storagedTheme !== null) {
-      dispatch(toggleTheme(storagedTheme === "dark" ? "light" : "dark"));
-    } else {
-      dispatch(toggleTheme("light"));
+    if (ctrl && key === "s") {
+      inputRef.current?.focus();
+      e.preventDefault();
+      return;
     }
-  }
+
+    if (key === "escape") {
+      inputRef.current?.blur();
+      return;
+    }
+
+    if (ctrl && key === "q") {
+      toggleTheme();
+      e.preventDefault();
+      return;
+    }
+
+    if (ctrl && key === "l") {
+      setQuery("");
+      e.preventDefault();
+      return;
+    }
+  }, []);
 
   useEffect(() => {
-    headerShortcuts(inputRef, handleQuery, changeTheme);
-  }, []);
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [handleKeyPress]);
 
   return (
     <HeaderContainer theme={theme}>
@@ -222,11 +235,11 @@ function Header() {
             <input
               ref={inputRef}
               type="text"
-              onChange={(e) => handleQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               value={query}
               placeholder="Search an emoji here."
             />
-            <button onClick={() => handleQuery("")}>
+            <button onClick={() => setQuery("")}>
               <img src={closeIcon} alt="Clear" width={20} />
             </button>
           </div>
@@ -235,7 +248,7 @@ function Header() {
             <div id="key">Ctrl + S</div>
           </div>
         </div>
-        <button id="toggle-theme" onClick={() => changeTheme()}>
+        <button id="toggle-theme" onClick={() => toggleTheme()}>
           <img src={themeIcon} alt="Toggle Theme" width={20} />
         </button>
       </div>

@@ -1,9 +1,5 @@
-import React, { useEffect } from "react";
-
-import generalShortcuts from "../shortcuts/generalShortcuts";
-
-import { useDispatch, useSelector } from "react-redux";
-import { toggleModal } from "../redux/modalReducer";
+import React, { useState, useEffect, useContext } from "react";
+import { ThemeContext } from "./App";
 
 import questionIcon from "../assets/questionIcon.svg";
 
@@ -145,46 +141,48 @@ const Modal = styled.div`
 `;
 
 function Help() {
-  const dispatch = useDispatch();
+  const { theme } = useContext(ThemeContext);
 
-  const theme = useSelector((state) => state.theme.currentTheme);
-  const modal = useSelector((state) => state.modal.showModal);
+  const [showModal, setShowModal] = useState(false);
 
-  function handleModal(action) {
-    switch (action) {
-      case "open":
-        dispatch(toggleModal(true));
-        return;
-      case "close":
-        dispatch(toggleModal(false));
-        return;
-    }
+  function toggleModal() {
+    showModal === true ? setShowModal(false) : setShowModal(true);
   }
 
-  useEffect(() => {
-    generalShortcuts(handleModal);
-  }, []);
+  const modalShortcuts = useEffect(() => {
+    if (!showModal) {
+      return;
+    }
+
+    document.addEventListener("keydown", (e) => {
+      const key = e.key.toLowerCase();
+
+      if (key === "escape") {
+        toggleModal();
+        return;
+      }
+    });
+  }, [showModal]);
 
   const modalContainerStyles = {};
   const modalStyles = {};
 
-  if (modal) {
+  if (showModal) {
     modalContainerStyles.pointerEvents = "auto";
     modalContainerStyles.opacity = 1;
-
     modalStyles.opacity = 1;
     modalStyles.transform = `scale(1.1)`;
   }
 
   return (
     <HelpContainer theme={theme}>
-      <button id="shortcuts-help" onClick={() => handleModal("open")}>
+      <button id="shortcuts-help" onClick={() => toggleModal()}>
         <img src={questionIcon} alt="Shortcuts" width={20} />
       </button>
 
       <ModalContainer style={modalContainerStyles} theme={theme}>
         <Modal style={modalStyles} theme={theme}>
-          <button id="close-modal-button" onClick={() => handleModal("close")}>
+          <button id="close-modal-button" onClick={() => toggleModal()}>
             Close
           </button>
 

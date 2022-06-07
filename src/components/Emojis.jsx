@@ -1,6 +1,5 @@
-import React, { useState, useRef } from "react";
-
-import { useSelector } from "react-redux";
+import React, { useState, useRef, useContext, useEffect } from "react";
+import { ThemeContext } from "./App.jsx";
 
 import emojis from "../emoji-list.js";
 
@@ -50,6 +49,10 @@ const EmojisContainer = styled.main`
       font-size: 24px;
 
       background-color: transparent;
+
+      :hover {
+        background-color: ${(props) => props.theme.primary};
+      }
     }
   }
 `;
@@ -79,9 +82,11 @@ const Toast = styled.div`
   transition-property: opacity, transform;
 `;
 
-function Emojis() {
-  const theme = useSelector((state) => state.theme.currentTheme);
-  const query = useSelector((state) => state.query.userQuery);
+function Emojis({ query }) {
+  const { theme } = useContext(ThemeContext);
+
+  const [newToast, setNewToast] = useState(null);
+  const [copiedEmoji, setCopiedEmoji] = useState("");
 
   const filteredEmojis = emojis.filter((emoji) => {
     if (
@@ -93,43 +98,10 @@ function Emojis() {
     return;
   });
 
-  const [copiedEmoji, setCopiedEmoji] = useState("");
-
   function handleCopyEmoji(emoji) {
-    navigator.clipboard.writeText(emoji.symbol);
     setCopiedEmoji(emoji);
     notifyCopy();
   }
-
-  const [itemBoundingBox, setItemBoundingBox] = useState(null);
-  const [wrapperBoundingBox, setWrapperBoundingBox] = useState(null);
-  const [highlightedItem, setHighlightedItem] = useState(null);
-  const [isHoveredFromNull, setIsHoveredFromNull] = useState(null);
-
-  const highlightRef = useRef(null);
-  const wrapperRef = useRef(null);
-
-  const positionHighlight = (e, emoji) => {
-    setItemBoundingBox(e.target.getBoundingClientRect());
-    setWrapperBoundingBox(wrapperRef.current.getBoundingClientRect());
-    setIsHoveredFromNull(!highlightedItem);
-    setHighlightedItem(emoji);
-  };
-
-  const resetHighlight = () => setHighlightedItem(null);
-
-  const highlightStyles = {};
-
-  if (itemBoundingBox && wrapperBoundingBox) {
-    highlightStyles.transitionDuration = isHoveredFromNull ? "0ms" : "150ms";
-    highlightStyles.opacity = highlightedItem ? 1 : 0;
-    highlightStyles.width = `${itemBoundingBox.width}px`;
-    highlightStyles.transform = `translate(${
-      itemBoundingBox.left - wrapperBoundingBox.left
-    }px) translateY(${itemBoundingBox.top - wrapperBoundingBox.top}px)`;
-  }
-
-  const [newToast, setNewToast] = useState(null);
 
   function notifyCopy() {
     setNewToast(true);
@@ -139,6 +111,10 @@ function Emojis() {
     }, 2000);
   }
 
+  const copyEmojiToUserClipboard = useEffect(() => {
+    navigator.clipboard.writeText(copiedEmoji.symbol);
+  }, [copiedEmoji]);
+
   const toastStyles = {};
 
   if (newToast) {
@@ -146,25 +122,14 @@ function Emojis() {
     toastStyles.transform = `translateY(0px)`;
   }
 
-  if (!newToast) {
-    toastStyles.opacity = 0;
-    toastStyles.transform = `translateY(30px)`;
-  }
-
   return (
-    <EmojisContainer
-      theme={theme}
-      ref={wrapperRef}
-      onMouseLeave={resetHighlight}
-    >
+    <EmojisContainer theme={theme}>
       <div id="emojis-wrapper">
-        <div id="highlight" ref={highlightRef} style={highlightStyles}></div>
         {filteredEmojis.map((emoji, index) => (
           <div
             className="emoji"
             title={emoji.title}
             key={index}
-            onMouseOver={(e) => positionHighlight(e, emoji)}
             onClick={() => handleCopyEmoji(emoji)}
             data-aos="fade-up"
           >

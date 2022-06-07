@@ -6,7 +6,7 @@ function headerShortcuts(inputRef, handleQuery, changeTheme) {
     const ctrl = e.ctrlKey;
 
     if (ctrl && key === "s") {
-      inputRef.current.focus();
+      inputRef.current?.focus();
       e.preventDefault();
       return;
     }

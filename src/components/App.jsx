@@ -1,11 +1,9 @@
-import React from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 import Header from "./Header";
 import Emojis from "./Emojis";
 import Footer from "./Footer";
 import Help from "./Help";
-
-import { useSelector } from "react-redux";
 
 import "../styles/App.css";
 
@@ -25,16 +23,45 @@ const AppContainer = styled.div`
   background-color: ${(props) => props.theme.background};
 `;
 
+const dark = {
+  primary: "#303238",
+  background: "#1E2023",
+  text: "#D9D9D9",
+  filter: "invert(50%)",
+  hoveredFilter: "invert(100%)",
+};
+const light = {
+  primary: "#FFF",
+  background: "#D9D9D9",
+  text: "#1E2023",
+  filter: "invert(20%)",
+  hoveredFilter: "invert(0%)",
+};
+
+export const ThemeContext = createContext();
+const storagedTheme = JSON.parse(localStorage.getItem("userTheme"));
+
 function App() {
-  const theme = useSelector((state) => state.theme.currentTheme);
+  const [theme, setTheme] = useState(storagedTheme ? storagedTheme : dark);
+  const [query, setQuery] = useState("");
+
+  function toggleTheme() {
+    theme === dark ? setTheme(light) : setTheme(dark);
+  }
+
+  useEffect(() => {
+    localStorage.setItem("userTheme", JSON.stringify(theme));
+  }, [theme]);
 
   return (
-    <AppContainer theme={theme}>
-      <Header />
-      <Emojis />
-      <Footer />
-      <Help />
-    </AppContainer>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <AppContainer theme={theme}>
+        <Header props={{ query, setQuery }} />
+        <Emojis query={query} />
+        <Footer />
+        <Help />
+      </AppContainer>
+    </ThemeContext.Provider>
   );
 }
 
