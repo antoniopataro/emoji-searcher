@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "./App.jsx";
 
 import emojis from "../emoji-list.js";

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useContext, useEffect } from "react";
+import React, { useRef, useContext, useEffect } from "react";
 import { ThemeContext } from "./App";
 
 import closeIcon from "../assets/closeIcon.svg";
@@ -182,7 +182,7 @@ function Header({ props }) {
 
   const inputRef = useRef();
 
-  const handleKeyPress = useCallback((e) => {
+  const handleKeyPress = (e) => {
     const key = e.key.toLowerCase();
     const ctrl = e.ctrlKey;
 
@@ -208,7 +208,7 @@ function Header({ props }) {
       e.preventDefault();
       return;
     }
-  }, []);
+  };
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
