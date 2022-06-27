@@ -1,16 +1,13 @@
+
+![Frame 1](https://user-images.githubusercontent.com/87823281/175941960-54d79e9e-55b3-4bbe-8a28-0cfa1e18f6d5.png)
+
 # Emoji Searcher 🔎
 
 This is a simple Emoji Searcher app. 🤣
 
-# Preview
-
-<p align="center">
-  <img src="https://im3.ezgif.com/tmp/ezgif-3-fd9c209a48.gif">
-</p>
-
 Did it initially as some sort of speedrun to test my skills, but later on I focused on improving its UI. 💨
 
-## Info 🖋️
+### Info 🖋️
 
 Logic was super easy. 😎
 
@@ -18,7 +15,7 @@ Design not that easy, but super fun to create. It even has shortcuts!
 
 Got the emojis list object from [here](https://github.com/ahfarmer/emoji-search/blob/master/src/emojiList.json) (and modified it a little bit).
 
-## Libs
+### Libs 📚
 
 - `styled-components`;
-- `redux` - needed it for passing themes and other states, making everything cleaner (it was a mess with react's context);
+- `redux` - showed to be easier to manipulate themes and searches when on a higher level of modularization;
