@@ -18,7 +18,7 @@ Got the emojis list object from [here](https://github.com/ahfarmer/emoji-search/
 
 I created this project using `Vite` as its plugin. Chose `React` as framework - I was afraid of `Typescript` util then.
 
-Styled the project using `styled-components` and used `Redux` to manage shared states between components, which was a bad choice due to overkill: there's no need for `Redux`. I was just **scared** of `ContextAPI` at the time.
+Styled the project using `styled-components` and used `redux` to manage shared states between components, which was a bad choice due to overkill: there's no need for `redux`. I was just **scared** of `ContextAPI` at the time.
 
 <div style="display: inline_block"><br>
     <img align="center" title="ReactJS" alt="ReactJS" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg">
