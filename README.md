@@ -1,15 +1,13 @@
-# emoji searcher
+<sub>Credits to [this](https://github.com/ahfarmer/emoji-search/blob/master/src/emojiList.json) JSON emoji list.</sub>
 
-i made this project to test my recently-learned skills. i decided to focus more on its ui, implementing shortcuts and animations.
+#### About
+I made this project to test my recently-learned skills. I decided to focus more on its UI, implementing shortcuts and animations.
 
-looking back to it, i think it's crap.
+Looking back, it's crap. But it is what it is.
 
-i got the emojis list json [here.](https://github.com/ahfarmer/emoji-search/blob/master/src/emojiList.json)
-
-### stack and dependencies:
-
-- react.js
-- redux
-- javascript
-- styled-components
-- vite
+#### Tech
+- react.js;
+- redux;
+- javascript;
+- styled-components;
+- vite.
